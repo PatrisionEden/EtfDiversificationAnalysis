@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="style.css">
+   <title>Document</title>
+</head>
+
+<body>
+   <div class="mainWrapper">
+
+      <header>
+         <div class="columnWrapper">
+            <a href="#">DiAna</a>
+            <button id="userNameButton" style="display: none;">none</button>
+            <button id="headerLoginButton">Войти</button>
+         </div>
+      </header>
+
+      <div class="content columnWrapper">
+         <div class="contentItem investmentPortfolio" style="display: none">
+            <div class="contentItem-label">
+               <h2>Состав портфеля</h2>
+            </div>
+            <div>
+               <div class="securitiesList" id="securitiesList">
+                  <ul>
+                     <!-- <li class="securitiesList-item">
+                        <span class="securityName">tckr</span>
+                        <span class="securityAmount">
+                           <input type="number" placeholder="amount">
+                        </span>
+                        <span class="securityPrice">300</span>
+                        <span class="securityTotal">total</span>
+                        <img src="img/delete.png" alt="">
+                        "<span class="securityIsin" style="display: none;">0000</span>"
+                     </li> -->
+                  </ul>
+               </div>
+               <div class="securitiesButtons">
+                  <button id="addSecurityButton">Добавить</button>
+                  <button id="saveSecuritiesListButton">Сохранить</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <footer>
+         <div class="columnWrapper">
+            <p>Copyright 2022</p>
+         </div>
+      </footer>
+
+   </div>
+
+
+   <div class="authorization" style="display: none;" id="authorizationDialog">
+      <div class="blur"></div>
+      <div class="contentItem">
+         <div class="closeDiv"><img src="close.png" alt="" id="closeAuthorizationButton"></div>
+         <div class="contentItem-label">
+            <h2 id="signIn" class="radioLabel selected">Вход</h2>
+            <h2 id="signUp" class="radioLabel">Регистрация</h2>
+         </div>
+         <form id="loginForm">
+            <input id="userAuthorizationLogin" type="text" value="" placeholder="Логин">
+            <input id="userAuthorizationPassword" type="password" placeholder="Пароль">
+            <button id="authorizationLoginButton">Вход</button>
+         </form>
+         <form id="registrationForm" style="display: none;">
+            <input type="text" id="registrationLogin" placeholder="Логин">
+            <input type="text" id="registrationPassword" placeholder="Пароль">
+            <button id="registrationButton">Зарегистрироваться</button>
+         </form>
+      </div>
+   </div>
+
+   <div class="authorization" style="display: none;" id="SelectDialog">
+      <div class="blur"></div>
+      <div class="contentItem">
+         <div class="closeDiv"><img src="close.png" alt="" id="closeSelectDialogButton"></div>
+         <div class="contentItem-label">
+            <h2 class="radioLabel selected">ETF</h2>
+            <h2 class="radioLabel">Акция</h2>
+         </div>
+         <select name="security" class="securitySelect" id="securitySelect">
+         </select>
+         <div class="securitiesButtons">
+            <button id="SelectDialogConfirmButton">Добавить</button>
+         </div>
+      </div>
+   </div>
+   <script src="script.js"></script>
+   <script src="scripts/authorization.js"></script>
+</body>
+
+</html>

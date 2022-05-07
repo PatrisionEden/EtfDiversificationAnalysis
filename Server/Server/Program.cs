@@ -26,8 +26,7 @@ List<KeyValuePair<string, double>> isinToPrice = new List<KeyValuePair<string, d
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.Map("/about", () => "About Page");
-app.Map("/contact", () => "Contacts Page");
+app.UseMiddleware<TockenMiddleware>();
 
 app.Map("/authorization", async(context) =>
 {
@@ -111,101 +110,37 @@ app.Map("/registration", async (context) =>
 
 app.Map("/saveinvestmentportfolio", async (context) =>
 {
-    var response = context.Response;
-    if (context.Request.Cookies.ContainsKey("tocken") && context.Request.Cookies.ContainsKey("login"))
+    if (context.Request.HasJsonContentType())
     {
         Authorisation authorisation = Authorisation.GetInstace();
-        var tocken = context.Request.Cookies["tocken"];
         var login = context.Request.Cookies["login"];
 
-        if (tocken == null || login == null)
+        var stream = context.Request.Body;
+        StreamReader streamReader = new StreamReader(stream);
+        var str = streamReader.ReadToEndAsync().Result;
+        List<Security>? portfolio = JsonConvert.DeserializeObject<List<Security>>(str);
+
+        if (portfolio == null)
         {
-            response.StatusCode = 404;
-            await response.WriteAsync("tocken or login was null");
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync("portfolio was null");
 
             return;
         }
 
-        if (!authorisation.IsThisTockenForThatLoginValid(login, tocken))
-        {
-            response.StatusCode = 404;
-            await response.WriteAsync("tocken did not pass the authorization");
+        authorisation.SaveProtfolio(login, portfolio);
 
-            return;
-        }
-
-        if (context.Request.HasJsonContentType())
-        {
-            var stream = context.Request.Body;
-            StreamReader streamReader = new StreamReader(stream);
-            var str = streamReader.ReadToEndAsync().Result;
-            List<Security>? portfolio = JsonConvert.DeserializeObject<List<Security>>(str);
-
-            if (portfolio == null)
-            {
-                response.StatusCode = 404;
-                await response.WriteAsync("portfolio was null");
-
-                return;
-            }
-
-            authorisation.SaveProtfolio(login, portfolio);
-
-            response.StatusCode = 200;
-        }
-
-        response.StatusCode = 200;
-        await response.WriteAsJsonAsync(login);
+        context.Response.StatusCode = 200; 
+        await context.Response.WriteAsync("ok. save it.");
     }
     else
     {
-        response.StatusCode = 404;
-        await response.WriteAsync("unauthorized");
+        context.Response.StatusCode = 404;
+        await context.Response.WriteAsync("unauthorized");
     }
 });
 
 app.Run();
 
-
-
 public record UserLoginData(string login, string password);
 public record UserRegData(string login, string password);
-
-
-
-
-
-//app.Map("/getinvestmentportfolio", async (context) =>
-//{
-//    var response = context.Response;
-//    if (context.Request.Cookies.ContainsKey("tocken") && context.Request.Cookies.ContainsKey("login"))
-//    {
-//        Authorisation authorisation = Authorisation.GetInstace();
-//        var tocken = context.Request.Cookies["tocken"];
-//        var login = context.Request.Cookies["login"];
-
-//        if (tocken == null || login == null)
-//        {
-//            response.StatusCode = 404;
-//            await response.WriteAsync("tocken or login was null");
-
-//            return;
-//        }
-
-//        if (!authorisation.IsThisTockenForThatLoginValid(login, tocken))
-//        {
-//            response.StatusCode = 404;
-//            await response.WriteAsync("tocken did not pass the authorization");
-
-//            return;
-//        }
-
-//        response.StatusCode = 200;
-//        await response.WriteAsJsonAsync(login);
-//    }
-//    else
-//    {
-//        response.StatusCode = 404;
-//        await response.WriteAsync("unauthorized");
-//    }
-//});

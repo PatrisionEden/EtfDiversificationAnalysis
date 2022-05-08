@@ -10,6 +10,7 @@
         private Dictionary<string, DateTime> _tokenToExpirationDateTime;
 
         private Dictionary<string, UserData> _userDatas;
+        private UserDataController _userDataController;
 
     private Authorisation()
         {
@@ -18,6 +19,7 @@
             _loginToToken = new Dictionary<string, string>();
             _tokenToExpirationDateTime = new Dictionary<string, DateTime>();
             _userDatas = new Dictionary<string, UserData>();
+            _userDataController = UserDataController.GetInstance();
 
             _registeredUsers.Add("user");
             _loginToPassword["user"] = "user";
@@ -38,21 +40,25 @@
 
         public string RegisterNewUser(UserRegData userRegData)
         {
-            if (_registeredUsers.Contains(userRegData.login))
+            //userDataController.RegisterNewUser("user", "user");
+            //if(_registeredUsers.Contains(userRegData.login))
+            if (_userDataController.IsUserAlreadyRegistered(userRegData.login))
                 throw new AuthorizationException("Такой уже есть");
 
-            _registeredUsers.Add(userRegData.login);
-            _loginToPassword[userRegData.login] = userRegData.password;
-            _userDatas[userRegData.login] = new UserData(userRegData.login, userRegData.login, new List<Security>());
+            _userDataController.RegisterNewUser(userRegData.login, userRegData.password);
+            
+            //_registeredUsers.Add(userRegData.login);
+            //_loginToPassword[userRegData.login] = userRegData.password;
+            //_userDatas[userRegData.login] = new UserData(userRegData.login, userRegData.login, new List<Security>());
 
             return AuthorizeUserAndGetTocken(new UserLoginData(userRegData.login, userRegData.password));
         }
 
         public string AuthorizeUserAndGetTocken(UserLoginData userLoginData)
         {
-            if (!_registeredUsers.Contains(userLoginData.login))
+            if (!_userDataController.IsUserAlreadyRegistered(userLoginData.login))
                 throw new AuthorizationException("Такого пользователя нет");
-            if (_loginToPassword[userLoginData.login] != userLoginData.password)
+            if (_userDataController.CheckPassword(userLoginData.login, userLoginData.password) == false)
                 throw new AuthorizationException("Пароль не подошел");
 
             string tocken = GenerateNewTocken();
@@ -93,15 +99,14 @@
 
         public UserData GetUserDataByLogin(string login)
         {
-            return _userDatas[login];
+            var userPortfolio = _userDataController.GetUserPortfolioByUserLogin(login);
+
+            return new UserData(login, login, userPortfolio);
         }
-        public void SetUserDataByLogin(string login, UserData userData)
+
+        public void SaveProtfolio(string login, List<Security> portfolio)
         {
-            _userDatas[login] = userData;
-        }
-        public void SaveProtfolio(string login, List<Security> securities)
-        {
-            _userDatas[login].Portfolio = securities;
+            _userDataController.SavePortfolio(login, portfolio);
         }
     }
     public class AuthorizationException : Exception

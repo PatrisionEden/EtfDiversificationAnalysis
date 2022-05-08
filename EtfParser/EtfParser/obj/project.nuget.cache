@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RM/c18QbordiFZYqH3iwuCxmRV95kwZJxlHzCXJMT+MBYzdIOXGk9rLzpSWsJ1joDpaFoaBVkz13hDyIxdLhig==",
+  "dgSpecHash": "Pc7UpD9w2zELMoCw7a34m/S9omvHYmUFL9RGaKjbbMubu/r5KMjI8OJPHTZV8ry3EE2GjX4JRDgPClJiyZlldw==",
   "success": true,
-  "projectFilePath": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser\\EtfParser.csproj",
+  "projectFilePath": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser\\EtfParser.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Андрей Христофоров\\.nuget\\packages\\anglesharp\\0.16.1\\anglesharp.0.16.1.nupkg.sha512",
     "C:\\Users\\Андрей Христофоров\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",

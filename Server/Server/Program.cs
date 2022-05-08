@@ -6,6 +6,23 @@ using Newtonsoft.Json;
 var builder = WebApplication.CreateBuilder(
     new WebApplicationOptions { WebRootPath = "frontend"});
 var app = builder.Build();
+var userDataController = UserDataController.GetInstance();
+
+try
+{
+    userDataController.RegisterNewUser("user", "user"); 
+    userDataController.SavePortfolio("user", new()
+    {
+        new Security("0001", 1),
+        new Security("0002", 2),
+        new Security("0003", 3),
+        new Security("0004", 4)
+    });
+}
+catch(Exception e)
+{
+    Console.WriteLine("Лолецкий" + e.Message);
+};
 
 //List<string> availableETFs = new() { "FXCN", "FXDM", "FXES", "FXIM" };
 List<KeyValuePair<string, string>> availableIsinTickerPairs = new List<KeyValuePair<string, string>>()
@@ -50,7 +67,6 @@ app.Map("/authorization", async(context) =>
         response.Cookies.Append("login", userLoginData.login);
 
         response.StatusCode = 200;
-        //await response.WriteAsync(JsonConvert.SerializeObject(new InitialData(userLoginData.login, availableETFs)));
         await response.WriteAsync(
             JsonConvert.SerializeObject(
                 new InitialData(

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj": {}
+    "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj": {}
   },
   "projects": {
-    "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser\\EtfParser.csproj": {
+    "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser\\EtfParser.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser\\EtfParser.csproj",
+        "projectUniqueName": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser\\EtfParser.csproj",
         "projectName": "EtfParser",
-        "projectPath": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser\\EtfParser.csproj",
+        "projectPath": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser\\EtfParser.csproj",
         "packagesPath": "C:\\Users\\Андрей Христофоров\\.nuget\\packages\\",
-        "outputPath": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser\\obj\\",
+        "outputPath": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -88,14 +88,14 @@
         }
       }
     },
-    "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj": {
+    "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj",
+        "projectUniqueName": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj",
         "projectName": "EtfParser_Tests",
-        "projectPath": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj",
+        "projectPath": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj",
         "packagesPath": "C:\\Users\\Андрей Христофоров\\.nuget\\packages\\",
-        "outputPath": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser_Tests\\obj\\",
+        "outputPath": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser_Tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -116,8 +116,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser\\EtfParser.csproj": {
-                "projectPath": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser\\EtfParser.csproj"
+              "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser\\EtfParser.csproj": {
+                "projectPath": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser\\EtfParser.csproj"
               }
             }
           }

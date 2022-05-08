@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "g1HK2w5xVzdCjb55UISaRlPlBjLNr/+1N9iSCrLFgVrIywOvasA0f9pBf8KlnyHmutAeMFZ7VPRRV05dA9GocQ==",
+  "dgSpecHash": "EtWwrSuoUnlZU7mof0owdSSsh4mXlKGF37Q2jDxISzuxD6/icZqZdB3e+PfXSsVp31i1OJ6mkBMWBUT9LS8zng==",
   "success": true,
-  "projectFilePath": "C:\\.fastWorkZone\\EtfParser\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj",
+  "projectFilePath": "C:\\.fastWorkZone\\diplom\\EtfDiversificationAnalysis\\EtfParser\\EtfParser_Tests\\EtfParser_Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Андрей Христофоров\\.nuget\\packages\\anglesharp\\0.16.1\\anglesharp.0.16.1.nupkg.sha512",
     "C:\\Users\\Андрей Христофоров\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",

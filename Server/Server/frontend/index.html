@@ -6,6 +6,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="style.css">
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
    <title>Document</title>
 </head>
 
@@ -46,12 +47,38 @@
                </div>
             </div>
          </div>
-         <div class="contentItem">
+         <div class="contentItem" id="diagramContentItem">
             <div class="contentItem-label">
                <h2>Модель диверсификации</h2>
             </div>
-            <div>
-               
+            <div class="diagramList">
+               <div class="diagramListItem">
+                  <div class="contentItem-label">
+                     <h3>Диверсификация по странам</h3>
+                  </div>
+               <div id="countriesDiversificationDiagram" class="diagramListItemChart"></div>
+            </div>
+               <div class="diagramListItem">
+                  <div class="contentItem-label">
+                     <h3>Диверсификация по секторам</h3>
+                  </div>
+               <div id="sectorsDiversificationDiagram" class="diagramListItemChart"></div>
+            </div>
+               <div class="diagramListItem">
+                  <div class="contentItem-label">
+                     <h3>Диверсификация по отрослям</h3>
+                  </div>
+               <div id="industriesDiversificationDiagram" class="diagramListItemChart"></div>
+            </div>
+               <div class="diagramListItem">
+                  <div class="contentItem-label">
+                     <h3>Диверсификация по компаниям</h3>
+                  </div>
+               <div id="companiesDiversification" class="diagramListItemChart"></div>
+            </div>
+               <div>
+                  <button id="reloadButton">reload</button>
+               </div>
             </div>
          </div>
       </div>
@@ -104,7 +131,6 @@
    <script src="script.js"></script>
    <script src="scripts/authorization.js"></script>
    <script src="scripts/investmentPortfolio.js"></script>
-   <div id="chart_div" style="width: 500px; height: 700px;"></div>
 </body>
 
 </html>

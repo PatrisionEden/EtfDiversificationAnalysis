@@ -101,6 +101,7 @@ header
    overflow: hidden;
 
    margin-top: 10px;
+   margin-bottom: 10px;
 
    width: 100%;
    // display: flex;
@@ -204,6 +205,41 @@ header
    {
       margin-top: 10px;
       margin-bottom: 10px;
+   }
+
+   .diagramList
+   {
+      text-align: center; 
+      .diagramListItem
+      {
+         display: inline-flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: space-between;
+
+         width: 510px;
+         //height: 650px;
+         border: #222 solid 1px;
+         border-radius: 20px;
+         padding-bottom: 20px;
+
+         margin:10px;
+
+         h3
+         {
+            font-size: 22px;
+            font-weight: 500;
+         }
+
+         .diagramListItemChart
+         {
+
+            text
+            {
+               font-size: 14px;
+            }
+         }
+      } 
    }
 }
 //footer-------------------------------------

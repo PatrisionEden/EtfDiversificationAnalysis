@@ -7,17 +7,18 @@ var builder = WebApplication.CreateBuilder(
     new WebApplicationOptions { WebRootPath = "frontend"});
 var app = builder.Build();
 var userDataController = UserDataController.GetInstance();
+var securityDataProvider = SecurityDataProvider.GetInstance();
+var etfs = securityDataProvider.GetAllEtf();
+var dm = DiversificationModel.Create("user");
+
+var total1 = dm.CountriesToPart.Sum(p => p.Value);
+var total2 = dm.IndustryToPart.Sum(p => p.Value);
+var total3 = dm.SectorToPart.Sum(p => p.Value);
+var total4 = dm.IsinToPart.Sum(p => p.Value);
 
 try
 {
     userDataController.RegisterNewUser("user", "user"); 
-    userDataController.SavePortfolio("user", new()
-    {
-        new Security("0001", 1),
-        new Security("0002", 2),
-        new Security("0003", 3),
-        new Security("0004", 4)
-    });
 }
 catch(Exception e)
 {
@@ -67,12 +68,13 @@ app.Map("/authorization", async(context) =>
         response.Cookies.Append("login", userLoginData.login);
 
         response.StatusCode = 200;
+
+        var userData = authorisation.GetUserDataByLogin(userLoginData.login);
         await response.WriteAsync(
             JsonConvert.SerializeObject(
-                new InitialData(
-                    authorisation.GetUserDataByLogin(userLoginData.login),
-                    isinToPrice, 
-                    availableIsinTickerPairs
+                InitialData.Create(
+                    userData,
+                    etfs
                     )
                 )
             );
@@ -105,17 +107,17 @@ app.Map("/registration", async (context) =>
         response.StatusCode = 200;
         response.Cookies.Append("tocken", tocken);
         response.Cookies.Append("login", userRegData.login);
+
+        var userData = authorisation.GetUserDataByLogin(userRegData.login);
+
         await response.WriteAsync(
             JsonConvert.SerializeObject(
-                new InitialData(
-                    authorisation.GetUserDataByLogin(userRegData.login),
-                    isinToPrice,
-                    availableIsinTickerPairs
+                InitialData.Create(
+                    userData,
+                    etfs
                     )
                 )
             );
-        //await response.WriteAsJsonAsync(new InitialData(userRegData.login, availableETFs));
-        //await response.WriteAsJsonAsync(userRegData.login);
     }
     else
     {
@@ -128,13 +130,12 @@ app.Map("/saveinvestmentportfolio", async (context) =>
 {
     if (context.Request.HasJsonContentType())
     {
-        Authorisation authorisation = Authorisation.GetInstace();
         var login = context.Request.Cookies["login"];
 
         var stream = context.Request.Body;
         StreamReader streamReader = new StreamReader(stream);
         var str = streamReader.ReadToEndAsync().Result;
-        List<Security>? portfolio = JsonConvert.DeserializeObject<List<Security>>(str);
+        List<SecurityData>? portfolio = JsonConvert.DeserializeObject<List<SecurityData>>(str);
 
         if (portfolio == null)
         {
@@ -144,7 +145,7 @@ app.Map("/saveinvestmentportfolio", async (context) =>
             return;
         }
 
-        authorisation.SaveProtfolio(login, portfolio);
+        userDataController.SavePortfolio(login, portfolio);
 
         context.Response.StatusCode = 200; 
         await context.Response.WriteAsync("ok. save it.");
@@ -152,8 +153,19 @@ app.Map("/saveinvestmentportfolio", async (context) =>
     else
     {
         context.Response.StatusCode = 404;
-        await context.Response.WriteAsync("unauthorized");
+        await context.Response.WriteAsync("invalid data");
     }
+});
+
+app.Map("/diversificationmodel", async (context) =>
+{
+    var login = context.Request.Cookies["login"];
+
+    var dm = DiversificationModel.Create(login);
+
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(
+        JsonConvert.SerializeObject(dm));
 });
 
 app.Run();

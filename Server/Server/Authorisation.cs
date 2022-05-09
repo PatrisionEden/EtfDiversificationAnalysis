@@ -24,10 +24,10 @@
             _registeredUsers.Add("user");
             _loginToPassword["user"] = "user";
             _userDatas["user"] = new UserData("user", "Administrator", new() { 
-                    new Security("0001", 1),
-                    new Security("0002", 2),
-                    new Security("0003", 3),
-                    new Security("0004", 4)
+                    new SecurityData("0001", 1),
+                    new SecurityData("0002", 2),
+                    new SecurityData("0003", 3),
+                    new SecurityData("0004", 4)
             });
         }
 
@@ -104,7 +104,7 @@
             return new UserData(login, login, userPortfolio);
         }
 
-        public void SaveProtfolio(string login, List<Security> portfolio)
+        public void SaveProtfolio(string login, List<SecurityData> portfolio)
         {
             _userDataController.SavePortfolio(login, portfolio);
         }

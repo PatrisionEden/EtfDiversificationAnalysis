@@ -4,17 +4,23 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(
-    new WebApplicationOptions { WebRootPath = "frontend"});
+    new WebApplicationOptions { WebRootPath = "frontend"}
+    );
 var app = builder.Build();
+
 var userDataController = UserDataController.GetInstance();
 var securityDataProvider = SecurityDataProvider.GetInstance();
 var etfs = securityDataProvider.GetAllEtf();
-var dm = DiversificationModel.Create("user");
 
-var total1 = dm.CountriesToPart.Sum(p => p.Value);
-var total2 = dm.IndustryToPart.Sum(p => p.Value);
-var total3 = dm.SectorToPart.Sum(p => p.Value);
-var total4 = dm.IsinToPart.Sum(p => p.Value);
+var isinToTicker = securityDataProvider.GetIsinToTickerDictionary();
+var isinToPrice = securityDataProvider.GetIsinToPriceDictionary();
+
+//var dm = DiversificationModel.Create("user");
+
+//var total1 = dm.CountriesToPart.Sum(p => p.Value);
+//var total2 = dm.IndustryToPart.Sum(p => p.Value);
+//var total3 = dm.SectorToPart.Sum(p => p.Value);
+//var total4 = dm.IsinToPart.Sum(p => p.Value);
 
 try
 {
@@ -32,13 +38,6 @@ List<KeyValuePair<string, string>> availableIsinTickerPairs = new List<KeyValueP
     new KeyValuePair<string, string>("0002", "FXDM"),
     new KeyValuePair<string, string>("0003", "FXES"),
     new KeyValuePair<string, string>("0004", "FXIM"),
-};
-
-List<KeyValuePair<string, double>> isinToPrice = new List<KeyValuePair<string, double>>() {
-    new KeyValuePair<string, double>("0001", 1000),
-    new KeyValuePair<string, double>("0002", 333),
-    new KeyValuePair<string, double>("0003", 111),
-    new KeyValuePair<string, double>("0004", 37),
 };
 
 app.UseDefaultFiles();
@@ -157,6 +156,43 @@ app.Map("/saveinvestmentportfolio", async (context) =>
     }
 });
 
+app.Map("/getinvestmentportfolio", async (context) =>
+{
+    string login = context.Request.Cookies["login"] ?? throw new ArgumentNullException("В кукис не было логина");
+
+    var portfolio = userDataController.GetUserPortfolioByUserLogin(login);
+    var portfolioDTOs = portfolio.Select(sec =>
+    {
+        var etf = securityDataProvider.GetEtfByIsin(sec.Isin);
+        return new PortfolioDTO(sec.Isin, etf.Ticker, etf.Price, sec.Amount);
+    });
+
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(
+        JsonConvert.SerializeObject(portfolioDTOs.ToList()));
+});
+
+app.Map("/getisintotickerdictionary", async (context) =>
+{
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(
+        JsonConvert.SerializeObject(isinToTicker.ToArray()));
+});
+
+app.Map("/getavailableetfs", async (context) =>
+{
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(
+        JsonConvert.SerializeObject(etfs));
+});
+
+app.Map("/getisintopricedictionary", async (context) =>
+{
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(
+        JsonConvert.SerializeObject(isinToPrice.ToArray()));
+});
+
 app.Map("/diversificationmodel", async (context) =>
 {
     var login = context.Request.Cookies["login"];
@@ -168,7 +204,71 @@ app.Map("/diversificationmodel", async (context) =>
         JsonConvert.SerializeObject(dm));
 });
 
+app.Map("/getfullcomposition", async (context) =>
+{
+    var login = context.Request.Cookies["login"];
+
+    context.Response.StatusCode = 404;
+    if (login == null)
+    {
+        await context.Response.WriteAsync("login was null");
+        return;
+    }
+
+    var fcm = FullCompositionModel.Create(login);
+    context.Response.StatusCode = 200; 
+    await context.Response.WriteAsync(
+     JsonConvert.SerializeObject(fcm));
+});
+
+app.Map("/sendreport", async (context) =>
+{
+    if (context.Request.HasJsonContentType())
+    {
+        var login = context.Request.Cookies["login"];
+
+        var stream = context.Request.Body;
+        StreamReader streamReader = new StreamReader(stream);
+        var str = streamReader.ReadToEndAsync().Result;
+        var objects = JsonConvert.DeserializeObject<object[]>(str);
+        string? isin = (string?)objects[0];
+        string? reportText = (string?)objects[1];
+
+        userDataController.SaveReport(login ?? throw new ArgumentNullException(),
+            isin ?? throw new ArgumentNullException(),
+            reportText ?? throw new ArgumentNullException());
+
+        context.Response.StatusCode = 200;
+        await context.Response.WriteAsync("ok. save it.");
+    }
+    else
+    {
+        context.Response.StatusCode = 404;
+        await context.Response.WriteAsync("invalid data");
+    }
+});
+
+app.Map("/getreports", async (context) =>
+{
+    var login = context.Request.Cookies["login"];
+
+    context.Response.StatusCode = 404;
+    if (login == null)
+    {
+        await context.Response.WriteAsync("login was null");
+        return;
+    }
+
+    var reports = userDataController.GetReports();
+
+    context.Response.StatusCode = 200;
+    await context.Response.WriteAsync(
+        JsonConvert.SerializeObject(reports));
+});
+
 app.Run();
 
+
+public record PortfolioDTO(string Isin, string Ticker, double Price, int Amount);
 public record UserLoginData(string login, string password);
 public record UserRegData(string login, string password);

@@ -25,6 +25,26 @@ namespace Server
             return _instanse;
         }
 
+        public Dictionary<string, string> GetIsinToTickerDictionary()
+        {
+            Dictionary<string, string> isinToTicker = new Dictionary<string, string>();
+
+            GetAllEtf().ForEach(e => isinToTicker[e.Isin] = e.Ticker);
+            GetAllShares().ForEach(sh => isinToTicker[sh.Isin] = sh.Ticker);
+
+            return isinToTicker;
+        }
+
+        public Dictionary<string, double> GetIsinToPriceDictionary()
+        {
+            Dictionary<string, double> isinToTicker = new Dictionary<string, double>();
+
+            GetAllEtf().ForEach(e => isinToTicker[e.Isin] = e.Price);
+            GetAllShares().ForEach(sh => isinToTicker[sh.Isin] = sh.Price);
+
+            return isinToTicker;
+        }
+
         public List<Security> GetAllEtf()
         {
             List<Security> etfs = new List<Security>();
@@ -38,6 +58,20 @@ namespace Server
                 etfs.Add(security);
             }
             return etfs;
+        }
+        public List<Security> GetAllShares()
+        {
+            List<Security> shares = new List<Security>();
+            var tableRows = _dbConnection.GetTableFromSql(Queries.GetSharesTable).Rows;
+            foreach (DataRow row in tableRows)
+            {
+                string ticker = row[2].ToString() ?? "";
+                string isin = row[0].ToString() ?? "";
+                double price = (row[6].ToString() == null || row[6].ToString() == "") ? 0 : double.Parse(row[6].ToString());
+                Security security = new EtfFound(isin, ticker, price);
+                shares.Add(security);
+            }
+            return shares;
         }
 
         public EtfFound GetEtfByIsin(string isin)

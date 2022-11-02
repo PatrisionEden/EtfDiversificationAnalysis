@@ -53,7 +53,7 @@ namespace EtfParser
                 throw new ArgumentException("finexEtfData should be FinexEtfData");
 
             _etfDataInitialisator.InitialiseEtfData(finexEtfData);
-            _etfDataInitialisator.InitialiseEtfData(finexEtfData);
+            //_etfDataInitialisator.InitialiseEtfData(finexEtfData);
         }
         public IShareData CreateShareData(string shareName, string isin)
             => new ShareData(shareName, isin, null);

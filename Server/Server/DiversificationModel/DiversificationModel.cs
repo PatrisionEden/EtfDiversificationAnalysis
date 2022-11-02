@@ -7,17 +7,22 @@
         public List<KeyValuePair<string, double?>> IndustryToPart;
         //public List<Security> Securities;
         public List<KeyValuePair<string, double?>> IsinToPart;
+        public KeyValuePair<string, string>[] IsinToTicker;
+        public KeyValuePair<string, string>[] IsinToName;
 
         public DiversificationModel(List<KeyValuePair<string, double?>> countriesToPart, 
-            List<KeyValuePair<string, double?>> sectorToPart, List<KeyValuePair<string, double?>> industryToPart,
-            //List<Security> securities,
-            List<KeyValuePair<string, double?>> isinToPart)
+            List<KeyValuePair<string, double?>> sectorToPart, 
+            List<KeyValuePair<string, double?>> industryToPart,
+            List<KeyValuePair<string, double?>> isinToPart,
+            KeyValuePair<string, string>[] isinToTicker,
+            KeyValuePair<string, string>[] isinToName)
         {
             CountriesToPart = countriesToPart;
             SectorToPart = sectorToPart;
             IndustryToPart = industryToPart;
-            //Securities = securities;
             IsinToPart = isinToPart;
+            IsinToTicker = isinToTicker;
+            IsinToName = isinToName;
         }
 
         public static DiversificationModel Create(string login)
@@ -27,6 +32,8 @@
             List<KeyValuePair<string, double?>> industryToPart = new List<KeyValuePair<string, double?>>();
             //List<KeyValuePair<string, double?>> isinToPart = new List<Security>();
             List<KeyValuePair<string, double?>> isinToPart = new List<KeyValuePair<string, double?>>();
+            Dictionary<string, string> isinToTicker = new Dictionary<string, string>();
+            Dictionary<string, string> isinToName = new Dictionary<string, string>();
 
             SecurityDataProvider securityDataProvider = SecurityDataProvider.GetInstance();
             UserDataController userDataController = UserDataController.GetInstance();
@@ -53,6 +60,9 @@
                         Share share = securityDataProvider.GetShareByIsin(compositionItem.Key);
                         double partInEtf = compositionItem.Value;
                         double partInPortfolio = securityPartInPortfolio * partInEtf;
+                        string ticker = share.Ticker;
+                        string Name = share.Name;
+
                         if(partInPortfolio == 0)
                         {
                             ;
@@ -62,6 +72,9 @@
                         sectorToPart.AddingWithoutDublicates(new KeyValuePair<string, double?>(share.Sector, partInPortfolio));
                         industryToPart.AddingWithoutDublicates(new KeyValuePair<string, double?>(share.Industry, partInPortfolio));
                         isinToPart.AddingWithoutDublicates(new KeyValuePair<string, double?>(share.Isin, partInPortfolio));
+                        isinToTicker[share.Isin] = share.Ticker;
+                        isinToName[share.Isin] = share.Name;
+                        var a = isinToName.ToArray();
                     }
                 }
                 else
@@ -70,10 +83,16 @@
                 }
             }
 
-            return new DiversificationModel(countriesToPart.OrderByDescending(e => e.Value).ToList(),
+            var dm = new DiversificationModel(countriesToPart.OrderByDescending(e => e.Value).ToList(),
                 sectorToPart.OrderByDescending(e => e.Value).ToList(),
                 industryToPart.OrderByDescending(e => e.Value).ToList(),
-                isinToPart.OrderByDescending(e => e.Value).ToList());
+                isinToPart.OrderByDescending(e => e.Value).ToList(),
+                isinToTicker.ToArray(),
+                isinToName.ToArray());
+
+            var total = dm.IsinToPart.Sum(pair => pair.Value);
+
+            return dm;
         }
     }
 

@@ -1,15 +1,15 @@
 @import "nullStyle.scss";
+@import "header.scss";
 $bodyBGColor: #222;
 $headerBGColor: #aaa;
 $headerTextColor: #fff;
 
-$borderForColumnWrapper: #fff solid 1px;
+$borderForColumnWrapper: none;
 
 $oddListElementBGColor: #f6f6f6;
 $evenListElementBGColor: #eee;
 
 $smallFontSize: 14px;
-
 
 *
 {
@@ -51,47 +51,6 @@ body
    height: 100%;
    margin: 0 auto;
 }
-//header-------------------------------------
-header
-{
-   height: 100px;
-   width: 100%;
-
-   background-color: $headerBGColor;
-   color: $headerTextColor;
-   .columnWrapper
-   {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-   }
-   
-   a{
-      flex: 1 1 auto;
-
-      display: flex;
-      justify-content: start;
-      align-items: center;
-
-      padding: 30px;
-      height: 100%;
-
-      @extend %tplHeaderText;
-      font-size: 48px;
-      text-align: center;
-   }
-   button{
-      @extend %tplHeaderText;
-
-      display: block;
-      height: 100%;
-      margin:0 20px;
-      //width: 150px;
-      font-size: 24px;
-      background: none;
-   }
-}
-//contentItem--------------------------------
 .contentItem
 {
    z-index: 0;
@@ -123,7 +82,6 @@ header
          
       }
    }
-
    .securitiesList
    {
 
@@ -143,6 +101,27 @@ header
          {
             background-color: $oddListElementBGColor;
          }
+
+         .sender::before{
+            content: "Отправитель: ";
+            font-size: $smallFontSize;
+         }
+
+         .reportId::before{
+            content: "reportId: ";
+            font-size: $smallFontSize;
+         }
+
+         .security::before{
+            content: "Isin: ";
+            font-size: $smallFontSize;
+         }
+
+         .reportText::before{
+            content: "Isin: ";
+            font-size: $smallFontSize;
+         }
+
 
          .securityName::before
          {
@@ -206,41 +185,80 @@ header
       margin-top: 10px;
       margin-bottom: 10px;
    }
+   .diversificationContent{
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
 
-   .diagramList
-   {
-      text-align: center; 
-      .diagramListItem
-      {
-         display: inline-flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: space-between;
-
-         width: 510px;
-         //height: 650px;
-         border: #222 solid 1px;
-         border-radius: 20px;
-         padding-bottom: 20px;
-
-         margin:10px;
-
-         h3
-         {
-            font-size: 22px;
-            font-weight: 500;
+      .diagram{
+         max-width: 320px;
+         .diagramListItemChart{
+            width: 100%;
          }
+         .diagramListItemChart text{
+            font-size: 14px;
+         }
+      }
+      .diversificationTable{
+         padding: 10px;
+         //flex: 1 1 auto;
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+         width: 100%;
+         min-width: 300px;
+         table{
+            flex: 1 1 auto;
 
-         .diagramListItemChart
-         {
+            border-spacing: 0;
+            tr{
+               border-top: 1px solid #222;
+            }
 
-            text
-            {
-               font-size: 14px;
+            td{
+               border-top: 1px solid #222;
             }
          }
-      } 
+      }
    }
+
+   // .diagramList
+   // {
+   //    text-align: center; 
+   //    .diagramListItem
+   //    {
+   //       display: inline-flex;
+   //       flex-direction: column;
+   //       align-items: center;
+   //       justify-content: space-between;
+
+   //       width: 510px;
+   //       //height: 650px;
+   //       border: #222 solid 1px;
+   //       border-radius: 20px;
+   //       padding-bottom: 20px;
+
+   //       margin:10px;
+
+   //       h3
+   //       {
+   //          font-size: 22px;
+   //          font-weight: 500;
+   //       }
+
+   //       .diagramListItemChart
+   //       {
+
+   //          text
+   //          {
+   //             font-size: 14px;
+   //          }
+   //       }
+   //    } 
+   // }
+
 }
 //footer-------------------------------------
 footer{

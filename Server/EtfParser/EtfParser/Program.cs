@@ -9,7 +9,7 @@ Console.WriteLine("----FinEx----");
 Console.WriteLine("Composite:");
 foreach(var etfData in finexData.EtfDatas)
 {
-    Console.Write("\r" + etfData.EtfName);
+    Console.WriteLine(etfData.EtfName);
 }
 Console.WriteLine();
 Console.WriteLine();
@@ -20,6 +20,8 @@ foreach (var etfData in finexData.EtfDatas)
     dBUpdater.SaveOrUpdateIEtfData(etfData);
     Console.WriteLine(etfData.EtfName + "\t Amount of shares: " + etfData.ShareDatas.Count);
 }
+Console.WriteLine();
+Console.WriteLine();
 foreach (var etfData in finexData.EtfDatas)
 {
     if (etfData.IsInitialised == false)
@@ -28,17 +30,18 @@ foreach (var etfData in finexData.EtfDatas)
     Console.WriteLine("Saving " + etfData.EtfName + ".");
     foreach(var shareData in etfData.ShareDatas)
     {
-        Console.Write("\t\t\t\t\t\t\r");
         if(dBUpdater.IsShareDataRowExists(shareData.Isin) == false)
         {
             if (shareData.IsInitialised == false)
                 factory.InitialiseShareData(shareData);
             dBUpdater.SaveOrUpdateIShareDataByIsin(shareData, false);
         }
-        Console.Write("Saved "+ count + " from " + etfData.ShareDatas.Count);
+        Console.Write("Saved " + (count + 1) + " from " + etfData.ShareDatas.Count);
+        Console.Write("\t\t\t\t\t\t\r");
         count++;
     }
+    Console.WriteLine();
     if (etfData.IsInitialised == false)
         factory.InitialiseEtfData(etfData);
-    Console.WriteLine(etfData.EtfName + "\t Amount of shares: " + etfData.ShareDatas.Count);
+    //Console.WriteLine(etfData.EtfName + "\t Amount of shares: " + etfData.ShareDatas.Count);
 }

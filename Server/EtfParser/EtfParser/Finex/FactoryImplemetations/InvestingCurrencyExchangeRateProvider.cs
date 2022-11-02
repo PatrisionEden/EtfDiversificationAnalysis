@@ -59,7 +59,7 @@ namespace EtfParser
             if (rate == null)
                 throw new Exception("Cannot parse currency rate from HTML page");
 
-            return double.Parse(rate);
+            return double.Parse(rate.Replace(",", ""));
         }
     }
 }

@@ -77,6 +77,34 @@ namespace Server
             return userPortfolioDeserialized;
         }
 
+        public void SaveReport(string userLogin, string isin, string reportText)
+        {
+            string? userId = GetTableFromSql(Queries.GetUserIdByUserLogin(userLogin)).Rows[0][0].ToString();
+            if (userId == null)
+                throw new NullReferenceException();
+            ExecuteSqlCommand(Queries.AddReport(userId, isin, reportText));
+        }
+
+        public List<Report> GetReports()
+        {
+            List<Report> reports = new List<Report>();
+            var rows = GetTableFromSql(Queries.GetReports()).Rows;
+
+            foreach(DataRow row in rows)
+            {
+                int reportId = int.Parse(row[0].ToString() ?? "-1");
+                int userId = int.Parse(row[1].ToString() ?? "-1");
+                string reportText = row[2].ToString() ?? "Error";
+                string isin = row[3].ToString() ?? "Error";
+
+                string userLogin = (string)GetTableFromSql(Queries.GetUserLoginById(userId)).Rows[0][0];
+
+                reports.Add(new Report(reportId, userLogin, reportText, isin));
+            }
+
+            return reports;
+        }
+
         private void CreateTablesIfNotExistTablesInitialization()
         {
             ExecuteSqlCommand(Queries.DBTablesInitialization());

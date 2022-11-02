@@ -40,16 +40,10 @@
 
         public string RegisterNewUser(UserRegData userRegData)
         {
-            //userDataController.RegisterNewUser("user", "user");
-            //if(_registeredUsers.Contains(userRegData.login))
             if (_userDataController.IsUserAlreadyRegistered(userRegData.login))
                 throw new AuthorizationException("Такой уже есть");
 
             _userDataController.RegisterNewUser(userRegData.login, userRegData.password);
-            
-            //_registeredUsers.Add(userRegData.login);
-            //_loginToPassword[userRegData.login] = userRegData.password;
-            //_userDatas[userRegData.login] = new UserData(userRegData.login, userRegData.login, new List<Security>());
 
             return AuthorizeUserAndGetTocken(new UserLoginData(userRegData.login, userRegData.password));
         }

@@ -1,0 +1,85 @@
+$bodyBGColor: #222;
+$headerBGColor: #aaa;
+$headerTextColor: #fff;
+
+$borderForColumnWrapper: none;
+
+$oddListElementBGColor: #f6f6f6;
+$evenListElementBGColor: #eee;
+
+$smallFontSize: 14px;
+
+%tplHeaderText
+{
+   color: $headerTextColor;
+   font-weight: 700;
+}
+
+header
+{
+   height: 100px;
+   width: 100%;
+
+   background-color: $headerBGColor;
+   color: $headerTextColor;
+   
+   .columnWrapper
+   {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+   }
+
+   button{
+      @extend %tplHeaderText;
+
+      display: block;
+      height: 100%;
+      margin:0 20px;
+      //width: 150px;
+      font-size: 24px;
+      background: none;
+
+      position: relative;
+
+      &:first-child{
+         flex: 1 1 auto;
+
+         display: flex;
+         justify-content: start;
+         align-items: center;
+   
+         padding: 30px;
+         height: 100%;
+   
+         @extend %tplHeaderText;
+         font-size: 48px;
+         text-align: center;
+      }
+   }
+   #divAnalysisButton{
+      &:hover{
+         .header-subMenu{
+            display: block;
+         }
+      }
+   }
+   .header-subMenu{
+      display: none;
+      position: absolute;
+
+      top: 100px;
+
+      width: 110%;
+
+      li{
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 50px;
+         border: 1px solid #222;
+         background-color: $headerBGColor;
+         z-index: 1001;
+      }
+   }
+}

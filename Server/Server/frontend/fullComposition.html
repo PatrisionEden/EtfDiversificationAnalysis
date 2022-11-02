@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="css/fullComposition.css">
+   <title>Investment portfolio</title>
+</head>
+<body>
+   <div class="mainWrapper">
+
+      <header>
+         <div class="columnWrapper">
+            <button id="headerLogo">DiAna</button>
+            <button id="investmentPortfolioButton">Портфель</button>
+            <button id="divAnalysisButton" class="subMenuHeader">Распределение Активов
+               <ul class="header-subMenu">
+                  <li id="AnalysisButtonCuntries">По Странам</li>
+                  <li id="AnalysisButtonIndustries">По Отрослям</li>
+                  <li id="AnalysisButtonSectors">По Секторам</li>
+                  <li id="AnalysisButtonCompanies">По Компаниям</li>
+                  <li id="FullCompositionButton">Состав</li>
+               </ul>
+            </button>
+            <button id="userNameButton" style="display: none;">none</button>
+            <button id="headerLoginButton">Войти</button>
+         </div>
+      </header>
+
+      <div class="content columnWrapper">
+         <div class="contentItem investmentPortfolio">
+            <div class="contentItem-label">
+               <h2>Состав портфеля</h2>
+            </div>
+            <div class="fullTable">
+               <table id="fullCompositionTable">
+                  <tr class="diversificationTable-headerrow">
+                     <th>Страна</th>
+                     <th>Сектор</th>
+                     <th>Отрасль</th>
+                     <th>Isin</th>
+                     <th>Тикер</th>
+                     <th>Имя</th>
+                     <th>Цена</th>
+                     <th>Вес в портфеле</th>
+                  </tr>
+                  <!-- <tr class="diversificationTable-row">
+                     <td>value</td>
+                     <td>value</td>
+                     <td>value</td>
+                     <td>value</td>
+                     <td>value</td>
+                  </tr> -->
+               </table>
+            </div>
+         </div>
+      </div>
+
+      <div class="authorization" style="display: none;" id="authorizationDialog">
+         <div class="blur"></div>
+         <div class="contentItem">
+            <div class="closeDiv"><img src="img/close.png" alt="" id="closeAuthorizationButton"></div>
+            <div class="contentItem-label">
+               <h2 id="signIn" class="radioLabel selected">Вход</h2>
+               <h2 id="signUp" class="radioLabel">Регистрация</h2>
+            </div>
+            <form id="loginForm">
+               <input id="userAuthorizationLogin" type="text" value="" placeholder="Логин">
+               <input id="userAuthorizationPassword" type="password" placeholder="Пароль">
+               <button id="authorizationLoginButton">Вход</button>
+            </form>
+            <form id="registrationForm" style="display: none;">
+               <input type="text" id="registrationLogin" placeholder="Логин">
+               <input type="text" id="registrationPassword" placeholder="Пароль">
+               <button id="registrationButton">Зарегистрироваться</button>
+            </form>
+         </div>
+      </div>
+
+      <div class="authorization" style="display: none;" id="ReportDialog">
+         <div class="blur"></div>
+         <div class="contentItem">
+            <div class="closeDiv"><img src="img/close.png" alt="" id="closeSelectDialogButton"></div>
+            <h2>Заявление о неточности</h2>
+            <h3 id="IsinField">Isin: US67066G1040</h3>
+            <textarea name="" id="reportText" cols="30" rows="10" placeholder="Опишите проблему"></textarea>
+            <div class="securitiesButtons">
+               <button id="SelectDialogConfirmButton">Отправить</button>
+            </div>
+            <div id="isinHidden" style="display: none;"></div>
+         </div>
+      </div>
+
+      <footer>
+         <div class="columnWrapper">
+            <p>Copyright 2022</p>
+         </div>
+      </footer>
+
+   </div>
+   <!-- <script src="script.js"></script> -->
+   <script src="scripts/header.js"></script>
+   <script src="scripts/authorization.js"></script>
+   <script src="scripts/fullComposition.js"></script>
+   <!-- <script src="scripts/investmentPortfolio.js"></script> -->
+</body>
+</html>

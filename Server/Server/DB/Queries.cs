@@ -18,6 +18,16 @@
                 "    userPassword STRING  NOT NULL\n" +
                 ");\n" +
                 "\n" +
+                "CREATE TABLE IF NOT EXISTS ReportsTable(\n" +
+                "    reportId INTEGER PRIMARY KEY AUTOINCREMENT\n" +
+                "                       UNIQUE\n" +
+                "                       NOT NULL,\n" +
+                "    userId INTEGER REFERENCES UsersTable (userId)\n" +
+                "                       NOT NULL,\n" +
+                "    reportText STRING  NOT NULL,\n" +
+                "    Isin STRING\n" +
+                ");\n" +
+                "\n" +
                 "CREATE TABLE IF NOT EXISTS UserPortfolioTable (\n" +
                 "    userId            INTEGER REFERENCES UsersTable (userId) \n" +
                 "                              NOT NULL\n" +
@@ -51,6 +61,18 @@
                 "   VALUES (\n" +
                 string.Format("       '{0}'\n", userId) +
                 ");";
+
+        public static string AddReport(string userId, string isin, string reportText)
+                => "INSERT INTO ReportsTable (\n" +
+                "   userId,\n" +
+                "   Isin,\n" +
+                "   reportText\n" +
+                ")\n" +
+                "VALUES(\n" +
+                string.Format("   '{0}',\n", userId) +
+                string.Format("   '{0}',\n", isin) +
+                string.Format("   '{0}'\n", reportText) +
+                ");";
         public static string UpdateUserPortfolioJsonByUserId(string userId, string userPortfolioJson)
             => "UPDATE UserPortfolioTable\n" +
                 string.Format("SET userPortfolioJSON = '{0}'\n", userPortfolioJson) +
@@ -73,13 +95,24 @@
             "from UserPortfolioTable\n" +
             string.Format("where userId = {0};", userId);
 
+        public static string GetUserLoginById(int id)
+            => "select min(userLogin)\n" +
+            "from UsersTable\n" +
+            "where userId = 3;";
+
         public static string GetEtfsTable
             => "select *\n" +
             "from Etfs";
+        public static string GetSharesTable
+            => "select *\n" +
+            "from Shares";
         public static string GetEtfByIsin(string isin)
             => "select *\n" +
             "from Etfs\n" +
             string.Format("where Isin = '{0}';", isin);
+        public static string GetReports()
+            => "select *\n" +
+            "from ReportsTable;";
         public static string CountOfEtfWithSpecifiedIsin(string isin)
             => "select Count()\n" +
             "from Etfs\n" +

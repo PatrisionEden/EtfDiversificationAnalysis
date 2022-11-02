@@ -5,17 +5,32 @@ const securitySelect = document.getElementById("securitySelect");
 const closeSelectDialogButton = document.getElementById("closeSelectDialogButton");
 const SelectDialogConfirmButton = document.getElementById("SelectDialogConfirmButton");
 const saveSecuritiesListButton = document.getElementById("saveSecuritiesListButton");
+let userInvestmentPortfolio;
+let avilableEtfs;
 
-
-addSecurityButton.addEventListener("click", addNewItemInSecuritiesList);
+addSecurityButton.addEventListener("click", ShowSelectDialog);
 closeSelectDialogButton.addEventListener("click", HideSelectDialog);
 SelectDialogConfirmButton.addEventListener("click", SelectDialogConfirmButtonAction);
 saveSecuritiesListButton.addEventListener("click", SaveSecuritiesList);
 
 
-function addNewItemInSecuritiesList()
+async function LoadUserInvetsmentPortfolio(){
+   const response = await fetch("/getinvestmentportfolio");
+   userInvestmentPortfolio = await response.json();
+   console.log(userInvestmentPortfolio);
+};
+
+async function LoadAvailableEtfs(){
+   const response = await fetch("/getavailableetfs");
+   avilableEtfs = await response.json();
+   console.log(avilableEtfs);
+};
+
+//getavailableetfs
+
+function ShowInvestmentPortfolio()
 {
-   ShowSelectDialog();
+   investmentPortfolio.style.display = "block";
 };
 
 function ShowSelectDialog()
@@ -30,11 +45,13 @@ function HideSelectDialog()
 
 function SelectDialogConfirmButtonAction()
 {
+   let selectedOption = securitySelect.selectedOptions[0];
+   let selectedIsin = selectedOption.value;
 
-   let selectedOption = securitySelect.selectedOptions[0].innerHTML;
-   let selectedIsin = selectedOption.split(' ')[0];
+   let etf = avilableEtfs.find(element => element.Isin == selectedIsin);
+   console.log(etf);
 
-   InsertItemInSecurities(IsinToTicker.get(selectedIsin), 0, IsinToPrice.get(selectedIsin), selectedIsin);
+   InsertItemInSecurities(etf.Ticker, 0, etf.Price, etf.Isin);
    HideSelectDialog();
 };
 
@@ -51,7 +68,7 @@ async function SaveSecuritiesList()
       Portfolio.push(security);
    };
    console.log(Portfolio);
-   console.log(initialData.UserData.Portfolio);
+   //console.log(initialData.UserData.Portfolio);
 
    const response = await fetch("/saveinvestmentportfolio", {
       method: "POST",
@@ -60,20 +77,32 @@ async function SaveSecuritiesList()
   });
 };
 
+async function LoadInvestmentPortfolio()
+{
+   let securitiesList = document.getElementById("securitiesList");
+   let ul = securitiesList.firstElementChild;
+   ul.innerHTML = "";
+   let portfolio = userInvestmentPortfolio;
+   portfolio.forEach(element => {
+      InsertItemInSecurities(element.Ticker, element.Amount, element.Price, element.Isin);
+   });
+};
+
 function InsertItemInSecurities(tickerStr, amount, price, isin)
 {
    let securitiesList = document.getElementById("securitiesList");
    let ul = securitiesList.firstElementChild;
    let li = document.createElement("li");
-   li.innerHTML = 
-   "<span class=\"securityName\">" + tickerStr + "</span>" +
-   "<span class=\"securityAmount\">"+
-      "<input type=\"number\" placeholder=\"amount\" value=\"" + amount + "\">"+
-   "</span>" +
-   "<span class=\"securityPrice\">" + price + "</span>" +
-   "<span class=\"securityTotal\">" + amount * price + "</span>" +
-   "<span class=\"securityIsin\" style=\"display: none;\">" + isin + "</span>" +
-   "<img src=\"img/delete.png\" alt=\"\">"
+   let numberFormat = Intl.NumberFormat('en', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+   li.innerHTML =
+      "<span class=\"securityName\">" + tickerStr + "</span>" +
+      "<span class=\"securityAmount\">"+
+         "<input type=\"number\" placeholder=\"amount\" value=\"" + amount + "\">"+
+      "</span>" +
+      "<span class=\"securityPrice\">" + numberFormat.format(price) + "</span>" +
+      "<span class=\"securityTotal\">" + numberFormat.format(amount * price) + "</span>" +
+      "<span class=\"securityIsin\" style=\"display: none;\">" + isin + "</span>" +
+      "<img src=\"img/delete.png\" alt=\"\">"
    let deleteButton = li.querySelector("img");
    deleteButton.addEventListener("click", DeleteButtonAction);
    let amountInput = li.querySelector(".securityAmount");
@@ -91,31 +120,23 @@ function DeleteButtonAction(e)
    e.target.parentElement.remove();
 };
 
-async function LoadInvestmentPortfolio()
-{
-   ShowInvestmentPortfolio();
-   let securitiesList = document.getElementById("securitiesList");
-   let ul = securitiesList.firstElementChild;
-   ul.innerHTML="";
-   let portfolio = initialData.UserData.Portfolio;
-   portfolio.forEach(element => {
-      InsertItemInSecurities(IsinToTicker.get(element.Isin), element.Amount, IsinToPrice.get(element.Isin), element.Isin);
-   });
-};
-
-function ShowInvestmentPortfolio()
-{
-   investmentPortfolio.style.display = "block";
-};
-
 function InitialiseSelectList()
 {
    securitySelect.innerHTML="";
-   for (let entry of IsinToTicker)
-   {
+   avilableEtfs.forEach(element => {
       let option = document.createElement("option");
-      option.innerHTML = entry[0] + " " + entry[1];
+      option.innerHTML = element.Ticker;
+      option.value = element.Isin;
       securitySelect.append(option);
-   };
+   });
    securitySelect.firstElementChild.selected = true;
 };
+
+async function Main(){
+   await LoadUserInvetsmentPortfolio();
+   await LoadAvailableEtfs();
+   LoadInvestmentPortfolio();
+   ShowInvestmentPortfolio();
+   InitialiseSelectList();
+}
+Main();

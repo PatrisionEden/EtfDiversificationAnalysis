@@ -1,0 +1,41 @@
+.columnWrapper {
+  width: 99%;
+  max-width: none;
+}
+
+.fullTable {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.fullTable table {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  border-spacing: 0;
+}
+
+.fullTable table td {
+  border-top: 1px solid #222;
+}
+
+.fullTable table tr:hover {
+  background-color: #aaa;
+}
+
+.authorization .contentItem h2 {
+  margin-top: 10px;
+  font-size: 36px;
+}
+
+.authorization .contentItem h3 {
+  margin-top: 10px;
+}
+
+.authorization .contentItem textarea {
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid #222;
+  border-radius: 15px;
+}

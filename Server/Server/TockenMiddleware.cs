@@ -8,6 +8,7 @@
         private List<string> PathToWatch = new List<string>()
         {
             "/saveinvestmentportfolio",
+            "/getinvestmentportfolio",
             "/pizzamozarera",
             "/rerarerarera"
         };

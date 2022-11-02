@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="css/style.css">
    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-   <title>Document</title>
+   <title>Main page</title>
 </head>
 
 <body>
@@ -15,7 +14,17 @@
 
       <header>
          <div class="columnWrapper">
-            <a href="#">DiAna</a>
+            <button id="headerLogo">DiAna</button>
+            <button id="investmentPortfolioButton">Портфель</button>
+            <button id="divAnalysisButton" class="subMenuHeader">Распределение Активов
+               <ul class="header-subMenu">
+                  <li id="AnalysisButtonCuntries">По Странам</li>
+                  <li id="AnalysisButtonIndustries">По Отрослям</li>
+                  <li id="AnalysisButtonSectors">По Секторам</li>
+                  <li id="AnalysisButtonCompanies">По Компаниям</li>
+                  <li id="FullCompositionButton">Состав</li>
+               </ul>
+            </button>
             <button id="userNameButton" style="display: none;">none</button>
             <button id="headerLoginButton">Войти</button>
          </div>
@@ -47,7 +56,7 @@
                </div>
             </div>
          </div>
-         <div class="contentItem" id="diagramContentItem">
+         <div class="contentItem diversificationAnalysis" id="diagramContentItem" style="display: none">
             <div class="contentItem-label">
                <h2>Модель диверсификации</h2>
             </div>
@@ -88,14 +97,13 @@
             <p>Copyright 2022</p>
          </div>
       </footer>
-
    </div>
 
 
    <div class="authorization" style="display: none;" id="authorizationDialog">
       <div class="blur"></div>
       <div class="contentItem">
-         <div class="closeDiv"><img src="close.png" alt="" id="closeAuthorizationButton"></div>
+         <div class="closeDiv"><img src="img/close.png" alt="" id="closeAuthorizationButton"></div>
          <div class="contentItem-label">
             <h2 id="signIn" class="radioLabel selected">Вход</h2>
             <h2 id="signUp" class="radioLabel">Регистрация</h2>
@@ -110,27 +118,13 @@
             <input type="text" id="registrationPassword" placeholder="Пароль">
             <button id="registrationButton">Зарегистрироваться</button>
          </form>
-      </div>
-   </div>
-
-   <div class="authorization" style="display: none;" id="SelectDialog">
-      <div class="blur"></div>
-      <div class="contentItem">
-         <div class="closeDiv"><img src="close.png" alt="" id="closeSelectDialogButton"></div>
-         <div class="contentItem-label">
-            <h2 class="radioLabel selected">ETF</h2>
-            <h2 class="radioLabel">Акция</h2>
-         </div>
-         <select name="security" class="securitySelect" id="securitySelect">
-         </select>
-         <div class="securitiesButtons">
-            <button id="SelectDialogConfirmButton">Добавить</button>
-         </div>
+         <span style="margin:10px; color: red;">Логин занят</span>
       </div>
    </div>
    <script src="script.js"></script>
+   <script src="scripts/header.js"></script>
    <script src="scripts/authorization.js"></script>
-   <script src="scripts/investmentPortfolio.js"></script>
+   <!-- <script src="scripts/investmentPortfolio.js"></script> -->
 </body>
 
 </html>
